@@ -1,0 +1,17 @@
+package-lock.json
+yarn-error.log
+yarn.lock
+rollup.config.js
+webpack.config.js
+.babelrc
+.editorconfig
+.eslintrc
+.gitignore
+.npmignore
+examples/
+test/
+source/
+NOTtest/
+transform/
+support/
+notes.txt
