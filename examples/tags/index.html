@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>tags</title>
+	<style>
+		html, body {
+			margin:0;
+			padding:0;
+		}
+		div {
+			position:absolute;
+			width: 50px;
+			height: 50px;
+			background-color:green;
+		}
+	</style>
+</head>
+<body>
+	<div id="element"></div>
+</body>
+
+<script src="../../dist/hyperstyle.js"></script>
+<script type="text/javascript">
+
+console.log("Hyperstyle:",Hyperstyle);
+
+Hyperstyle.registerAnimatableStyles({
+	left: Hyperstyle.lengthType,
+	top: Hyperstyle.lengthType,
+	transform: Hyperstyle.transformType
+});
+
+var duration = 2.5;
+var element = document.getElementById("element");
+var controller = {
+	animationForKey:function(key,value,previous) {
+		console.log("animation:%s;",key);
+		var oldX = 0;
+		var newX = 0;
+		var oldY = 0;
+		var newY = 0;
+		if (key === "left") {
+			oldX = previous;
+			newX = value;
+		}
+		if (key === "top") {
+			oldY = previous;
+			newY = value;
+		}
+		return {
+			property: "transform",
+			duration: duration,
+			from: "translate3d("+(oldX-newX)+"px,"+(oldY-newY)+"px,0px)",
+			to: "translate3d("+(0)+"px,"+(0)+"px,0px)"
+		};
+	}
+}
+Hyperstyle.activateElement(element,controller);
+
+function mouseDown(e) {
+	document.addEventListener("mousemove", mouseMove);
+	document.addEventListener("mouseup", mouseUp);
+	mouseMove(e);
+}
+function mouseMove(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	layout(e.x, e.y);
+}
+function mouseUp(e) {
+	document.removeEventListener("mousemove",mouseMove);
+	document.removeEventListener("mouseup",mouseUp);
+}
+document.addEventListener('mousedown', mouseDown);
+
+function layout(x,y) {
+	var width = element.offsetWidth;
+	var height = element.offsetHeight;
+	var oldX = element.offsetLeft;
+	var oldY = element.offsetTop;
+	var newX = x - width/2;
+	var newY = y - height/2;
+	console.log("old x:%s; y:%s; new x:%s; y:%s;",oldX,oldY,newX,newY);
+	element.style.left = newX + "px";
+	element.style.top = newY + "px";
+// 	controller.addAnimation({
+// 		property: "transform",
+// 		duration: duration,
+// 		from: "translate3d("+(oldX-newX)+"px,"+(oldY-newY)+"px,0px)",
+// 		to: "translate3d("+(0)+"px,"+(0)+"px,0px)"
+// 	});
+// 	element.addAnimation({
+// 		property: "left",
+// 		duration: duration,
+// 		from: oldX+"px",
+// 		to: newX+"px"
+// 	});
+// 	element.addAnimation({
+// 		property: "top",
+// 		duration: duration,
+// 		from: oldY+"px",
+// 		to: newY+"px"
+// 	});
+}
+</script>
+</html>

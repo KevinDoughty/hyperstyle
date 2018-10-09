@@ -1,0 +1,25 @@
+{
+	"name": "rocketship",
+	"version": "0.0.1",
+	"private": true,
+	"description": "Blending path animation vs. angular acceleration",
+	"main": "bundle.js",
+	"scripts": {
+		"build": "webpack --mode=production --progress --colors",
+		"dev": "webpack --mode=development --progress --colors",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Kevin Doughty",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"hyperstyle": "0.0.2"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.3",
+		"babel-loader": "^7.1.5",
+		"babel-preset-env": "^1.7.0",
+		"webpack": "^4.16.2",
+		"webpack-cli": "^3.1.0",
+		"webpack-dev-server": "^3.1.5"
+	}
+}

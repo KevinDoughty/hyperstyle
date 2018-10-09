@@ -1,0 +1,76 @@
+{
+	"name": "hyperstyle",
+	"version": "0.0.2",
+	"description": "style animation for hyperact",
+	"main": "dist/hyperstyle.js",
+	"module": "module/hyperstyle.js",
+	"scripts": {
+		"process": "BABEL_ENV=linker babel source/web-animations-processed --out-file source/web-animations-next/aaa-linked.js --no-babelrc --plugins='../babel-plugin-hyper-linker.js' && BABEL_ENV=process babel source/web-animations-next --out-dir source/web-animations-processed --no-babelrc --plugins='../babel-plugin-hyper-shuffle.js' && BABEL_ENV=linker babel source/web-animations-processed --out-file source/web-animations-processed/hyper-linked.js --no-babelrc --plugins='../babel-plugin-hyper-linker.js'",
+		"nextRollup": "./node_modules/.bin/rollup --config ./rollup.config.next.js",
+		"nextWebpack": "WEBPACK_ENV=dev webpack --mode=none --display-error-details --config ./webpack.config.next.js",
+		"next": "./node_modules/.bin/rollup --config ./rollup.config.next.js && WEBPACK_ENV=build webpack --mode=none --display-error-details --config ./webpack.config.next.js",
+		"build": "./node_modules/.bin/rollup -c && webpack --mode=production --progress --colors",
+		"dev": "./node_modules/.bin/rollup -c && webpack --mode=development --progress --colors",
+		"lint": "eslint source/*.js && eslint test/*.js --rule 'no-undef:0'",
+		"test": "BABEL_ENV=karma node_modules/.bin/karma start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/KevinDoughty/hyperstyle.git"
+	},
+	"keywords": [
+		"animation",
+		"style",
+		"additive",
+		"relative",
+		"layer"
+	],
+	"author": "Kevin Doughty",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/KevinDoughty/hyperstyle/issues"
+	},
+	"homepage": "https://github.com/KevinDoughty/hyperstyle#readme",
+	"dependencies": {
+		"hyperact": "0.0.17"
+	},
+	"unused": {
+		"babel-plugin-hyper-animations": "^0.0.1",
+		"rollup-plugin-node-resolve": "^3.0.0"
+	},
+	"notes": {
+		"babel-plugin-external-helpers": "as per https://github.com/rollup/rollup-plugin-babel"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-core": "^6.26.3",
+		"babel-eslint": "^8.2.6",
+		"babel-loader": "^7.1.5",
+		"babel-plugin-external-helpers": "^6.22.0",
+		"babel-preset-env": "^1.7.0",
+		"chai": "^4.1.2",
+		"eslint": "^5.2.0",
+		"karma": "^2.0.4",
+		"karma-babel-preprocessor": "^7.0.0",
+		"karma-chai": "^0.1.0",
+		"karma-chai-sinon": "^0.1.5",
+		"karma-chrome-launcher": "^2.2.0",
+		"karma-firefox-launcher": "^1.1.0",
+		"karma-mocha": "^1.3.0",
+		"karma-mocha-reporter": "^2.2.5",
+		"karma-requirejs": "^1.1.0",
+		"karma-safari-launcher": "^1.0.0",
+		"karma-sinon": "^1.0.5",
+		"mocha": "^5.2.0",
+		"requirejs": "^2.3.5",
+		"rollup": "^0.63.4",
+		"rollup-plugin-babel": "^3.0.7",
+		"rollup-plugin-eslint": "^5.0.0",
+		"rollup-plugin-node-resolve": "^3.3.0",
+		"sinon": "^6.2.0",
+		"sinon-chai": "^3.2.0",
+		"webpack": "^4.16.2",
+		"webpack-cli": "^3.1.0",
+		"webpack-dev-server": "^3.1.5"
+	}
+}
