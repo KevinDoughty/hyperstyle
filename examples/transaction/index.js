@@ -1,8 +1,10 @@
-import { activate, activateElement, HyperScale, transformType, currentTransaction, registerAnimatableStyles } from "hyperstyle";
+import { activate, activateElement, HyperScale, transformType, lengthType, currentTransaction, registerAnimatableStyles } from "hyperstyle";
 import { disableAnimation } from "hyperstyle";
 
 registerAnimatableStyles({ // An inconvenience that will eventually allow tree shaking unused css animation types. Used by number seven only.
-	transform: transformType
+	transform: transformType,
+	left:lengthType,
+	top:lengthType
 });
 
 function elastic(progress,omega,zeta) {
@@ -253,7 +255,7 @@ class Fourteen { // fourteen doesn't animate initially... should it ever animate
 		if (key === "transform") return true;
 	}
 }
-class Fifteen { //  FASTER_RENDER_LAYER destination correct
+class Fifteen {
 	constructor(name) {
 		if (!document.getElementById(name)) return;
 		this.element = document.getElementById(name);
@@ -278,29 +280,74 @@ if (document.getElementById("zero")) {
 }
 const one = new One("one");
 const two = new Two("two");
-const three = new Three("three"); // FASTER_RENDER_LAYER approved
+const three = new Three("three");
 //const four = new Four("four");
 //const five = new Five("five");
 const six = new Six("six");
 const seven = new Six("seven");
 
-const eight = new Eight("eight"); // FASTER_RENDER_LAYER approved
-const thirteen = new Eight("thirteen");  // FASTER_RENDER_LAYER fail // thirteen is an instanceof Eight! Difference is in keydown
+const eight = new Eight("eight");
+const thirteen = new Eight("thirteen");  // instanceof Eight. Difference is in keydown
 
-const nine = document.getElementById("nine");
-if (nine) {
-	nine.innerHTML = "nine";
-	activateElement(nine);
-}
-const ten = new Ten("ten");
+
+const nine = document.getElementById("nine"); // activateElement
+nine.innerHTML = "nine";
+activateElement(nine);
+nine.style.transform = "translate3d(0px, 0px, 0px)"; // unfortunate bugfix
+
+const ten = new Ten("ten"); // activateElement
+ten.element.style.transform = "translate3d(0px, 0px, 0px)"; // unfortunate bugfix
 // const eleven = new Eleven("eleven");
 // const twelve = new Twelve("twelve");
 
-const fourteen = new Fourteen("fourteen");
-const fifteen = new Fifteen("fifteen"); //  FASTER_RENDER_LAYER destination correct
+const fourteen = new Fourteen("fourteen"); // activateElement
+const fifteen = new Fifteen("fifteen"); // activateElement
 
 
+const sixteen = document.getElementById("sixteen"); // activateElement
+sixteen.innerHTML = "sixteen";
+//sixteen.style.transform = "translate3d(0px, 0px, 0px)"; // even more unfortunate failed bugfix
+const sixteenDelegate = {
+	animationForKey: function(key, value, previous) {
+		if (key === "left") return {
+			property: "transform",
+			from: "translate3d("+ previous +", 0px, 0px)",
+			to: "translate3d("+ value +", 0px, 0px)"
+		}
+		if (key === "top") return {
+			property: "transform",
+			from: "translate3d(0px, "+ previous + ", 0px)",
+			to: "translate3d(0px, "+ value + ", 0px)"
+		}
+	}
+}
+activateElement(sixteen, sixteen, sixteenDelegate);
 
+
+const seventeen = document.getElementById("seventeen"); // activateElement
+seventeen.innerHTML = "seventeen";
+const seventeenDelegate = {
+	animationForKey: function(key, value, previous) {
+		if (key === "left") return {
+			property: "transform",
+			from: "translate3d("+ previous +", 0px, 0px)",
+			to: "translate3d("+ value +", 0px, 0px)"
+		}
+		if (key === "top") return {
+			property: "transform",
+			from: "translate3d(0px, "+ previous + ", 0px)",
+			to: "translate3d(0px, "+ value + ", 0px)"
+		}
+	}
+}
+activateElement(seventeen, seventeen, seventeenDelegate);
+
+
+const eighteenWrapper = document.getElementById("eighteenWrapper");
+const eighteen = document.getElementById("eighteen"); // activateElement
+eighteen.innerHTML = "eighteen";
+activateElement(eighteen);
+let eighteenTo = "translate3d(0px, 0px, 0px)";
 
 document.addEventListener("keydown", e => {
 	const keyCode = e.keyCode;
@@ -314,7 +361,7 @@ document.addEventListener("keydown", e => {
 		const height = document.body.offsetHeight - 50;
 
 
-		negativeOne.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
+		negativeOne.transform = "translate3d("+ (Math.random()*width) +"px, "+ (Math.random()*height) + "px, 0px)";
 
 		zero.x = Math.random() * width;
 		zero.y = Math.random() * height;
@@ -334,7 +381,7 @@ document.addEventListener("keydown", e => {
 		seven.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
 
 		const eightNext = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
-		if (document.getElementById("eight")) eight.addAnimation({
+		eight.addAnimation({
 			property:"transform",
 			type:transformType,
 			from:eight.transform,
@@ -342,36 +389,68 @@ document.addEventListener("keydown", e => {
 		});
 		eight.transform = eightNext;
 
-		if (nine) nine.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
-
-		if (document.getElementById("ten")) ten.element.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
-		// if (document.getElementById("eleven")) eleven.element.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
-		// if (document.getElementById("twelve")) twelve.element.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
-		const thirteenOld = thirteen.transform;
 		const thirteenNext = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
+		const thirteenPrevious = thirteen.transform;
 		thirteen.transform = thirteenNext;
 		thirteen.addAnimation({
 			property:"transform",
 			type:transformType,
-			from:thirteenOld,
+			from:thirteenPrevious,
 			to:thirteenNext
 		});
 
-		if (fourteen.element) {
-			fourteen.element.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
-		}
+		nine.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
+
+		ten.element.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
+		// if (document.getElementById("eleven")) eleven.element.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
+		// if (document.getElementById("twelve")) twelve.element.style.transform = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
+
+		fourteen.element.style.transform = "translate3d("+ (Math.random()*width) +"px, "+ (Math.random()*height) + "px, 0px)";
+
+		sixteen.style.left = (Math.random() * width) + "px";
+		sixteen.style.top = (Math.random() * height) + "px";
+
+
 		disableAnimation();
-		if (fifteen.element) {
-			const from = fifteen.element.style.transform;
-			const to = "translate3d("+ (Math.random()*width) +"px,"+ (Math.random()*height) + "px,0px)";
-			fifteen.element.style.transform = to;
-			fifteen.element.addAnimation({
-				property:"transform",
-				type:transformType,
-				from:from,
-				to:to
-			});
-		}
+
+
+		const fifteenFrom = fifteen.element.style.transform;
+		const fifteenTo = "translate3d("+ (Math.random()*width) +"px, "+ (Math.random()*height) + "px, 0px)";
+		fifteen.element.style.transform = fifteenTo;
+		fifteen.element.addAnimation({
+			property:"transform",
+			type:transformType,
+			from:fifteenFrom,
+			to:fifteenTo
+		});
+
+
+		const seventeenLeftFrom = seventeen.style.left;
+		const seventeenLeftTo = (Math.random() * width) + "px";
+		const seventeenTopFrom = seventeen.style.top;
+		const seventeenTopTo = (Math.random() * height) + "px";
+		seventeen.style.left = seventeenLeftTo;
+		seventeen.style.top = seventeenTopTo;
+		seventeen.addAnimation({
+			property:"transform",
+			type:transformType,
+			from:"translate3d("+ seventeenLeftFrom +", "+ seventeenTopFrom + ", 0px)",
+			to:"translate3d("+ seventeenLeftTo +", "+ seventeenTopTo + ", 0px)"
+		});
+
+
+		const eighteenFrom = eighteenTo;
+		const eighteenLeft = (Math.random()*width) + "px";
+		const eighteenTop = (Math.random()*height) + "px";
+		eighteenTo = "translate3d("+ eighteenLeft +", " + eighteenTop + ", 0px)";
+		eighteenWrapper.style.left = eighteenLeft;
+		eighteenWrapper.style.top = eighteenTop;
+		eighteen.addAnimation({
+			property:"transform",
+			type:transformType,
+			from:eighteenFrom,
+			to:eighteenTo
+		});
 
 	}
 });
