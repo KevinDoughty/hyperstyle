@@ -349,6 +349,8 @@ eighteen.innerHTML = "eighteen";
 activateElement(eighteen);
 let eighteenTo = "translate3d(0px, 0px, 0px)";
 
+
+
 document.addEventListener("keydown", e => {
 	const keyCode = e.keyCode;
 	if (keyCode > 47 && keyCode < 58) {

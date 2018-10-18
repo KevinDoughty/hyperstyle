@@ -1,11 +1,7 @@
 import { activate } from "hyperact";
 import { prepareDocument, HyperCSSStyleDeclaration } from "./element.js";
-//import { beginTransaction, commitTransaction, currentTransaction, disableAnimation } from "hyperact";
-import { disableAnimation } from "hyperact";
-//const TRANSACTION_DURATION_ALONE_IS_ENOUGH = true;
 import { nonNumericType } from "./nonNumeric.js";
 
-const verbose = true;
 
 const usedPropertyTypes = {};
 
@@ -34,7 +30,13 @@ export class HyperStyleDelegate {
 	}
 	animationForKey(key,prettyValue,prettyPrevious,prettyPresentation,target) { // sometimesUglySometimesPrettyPrevious // prettyPrevious needs to be uglyPrevious. This is a Pyon problem
 		//if (verbose)
-		if (prettyPrevious === null || typeof prettyPrevious === "undefined") prettyPrevious = prettyValue;
+		if (prettyPrevious === null || typeof prettyPrevious === "undefined") {
+			const type = this.typeOfProperty(key);
+			if (type) {
+				const uglyValue = type.fromCssValue(prettyValue);
+				prettyPrevious = type.zero(uglyValue);
+			} else prettyPrevious = prettyValue; // should not be possible
+		}
 		if (prettyPresentation === null || typeof prettyPresentation === "undefined") prettyPresentation = prettyValue;
 		let description; // initially undefined
 		if (this.delegate && isFunction(this.delegate)) {

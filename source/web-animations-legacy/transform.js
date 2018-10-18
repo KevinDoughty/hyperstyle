@@ -787,7 +787,7 @@ export const transformType = {
 		return out;
 	},
 
-	output: function(proprty, value, svgMode) {
+	output: function(property, value, svgMode) {
 		return this.toCssValue(value,svgMode);
 	},
 	toCssValue: function(value,svgMode) {

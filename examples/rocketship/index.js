@@ -3,7 +3,7 @@ import { activateElement, transformType, registerAnimatableStyles } from "hypers
 // This uses explicit animation, pattern five in the transaction example
 
 const duration = 2.5;
-let counter = 0;
+let planetCounter = 0;
 let toggled = true;
 const rocket1 = document.getElementById("rocket1");
 const rocket2 = document.getElementById("rocket2");
@@ -82,10 +82,10 @@ function layout(animate) {
 
 	if (planet) { // queued, total duration is longer (animations are not interrupted)
 		if (animate) {
-			const animation = planet.animationNamed("planetRotation"+(counter-1)); // get the previous animation
+			const animation = planet.animationNamed("planetRotation"+(planetCounter-1)); // get the previous animation
 			if (animation) { // add a duplicate animation that starts when the previous one completes
 				animation.startTime = animation.startTime + duration;
-				planet.addAnimation(animation, "planetRotation"+(counter++));
+				planet.addAnimation(animation, "planetRotation"+(planetCounter++));
 			} else { // create the first planet rotation animation
 				planet.addAnimation({
 					property:"transform",
@@ -94,7 +94,7 @@ function layout(animate) {
 					to: "rotate(0deg)",
 					fillMode:"backwards", // so it applies even though it hasn't started
 					//easing: "cubic-bezier(.5,0,.5,1)", // default
-				}, "planetRotation"+(counter++)); // animation name is optional second argument, if you need to access it later
+				}, "planetRotation"+(planetCounter++)); // animation name is optional second argument, if you need to access it later
 			}
 		}
 		if (toggled) {
@@ -103,4 +103,5 @@ function layout(animate) {
 			planet.style.transform = "rotate(90deg)";
 		}
 	}
+
 }

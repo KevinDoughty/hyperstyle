@@ -1,5 +1,3 @@
-import { isDefined } from "./shared.js";
-
 export const nonNumericType = {
 	name:"nonNumericType",
 	toString: function() {
