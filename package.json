@@ -1,6 +1,6 @@
 {
 	"name": "hyperstyle",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "style animation for hyperact",
 	"main": "dist/hyperstyle.js",
 	"module": "module/hyperstyle.js",
@@ -32,7 +32,7 @@
 	},
 	"homepage": "https://github.com/KevinDoughty/hyperstyle#readme",
 	"dependencies": {
-		"hyperact": "0.0.17"
+		"hyperact": "0.0.18"
 	},
 	"unused": {
 		"babel-plugin-hyper-animations": "^0.0.1",
