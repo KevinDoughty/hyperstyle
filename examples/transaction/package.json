@@ -16,7 +16,7 @@
 		"babel-preset-es2015-native-modules": "^6.9.4"
 	},
 	"dependencies": {
-		"hyperstyle": "0.0.3"
+		"hyperstyle": "0.0.4"
 	},
 	"devDependencies": {
 		"babel-core": "^6.26.3",
